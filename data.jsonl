@@ -1,0 +1,7 @@
+{ "id": "doc one", "text": "This is the document one" }
+{ "id": "doc two", "text": "This is the document two" }
+{ "id": "bad doc" }
+{ "id": "doc three", "text": "hello This is the document three" }
+{ "id": "doc four", "text": "This is the document four world" }
+{ "id": "doc five", "text": "hello This is the document five world" }
+{ "id": "doc six", "text": "This is the document six" }
