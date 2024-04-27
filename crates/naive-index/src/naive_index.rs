@@ -57,11 +57,13 @@ impl SearchIndex {
     }
 
     pub fn search(&self, word1: &str, word2: &str) -> Vec<String> {
-        let mut found: Vec<String> = Vec::new();
+        let mut found: Vec<String> = Vec::with_capacity(2^12);
         // берём векторы с id документов из основного индекса по хешу слова, если нет, то возвращаем пустой вектор
         let Some(vec1) = self.index.get(&xxh3_64(word1.as_bytes())) else { return found };
         let Some(vec2) = self.index.get(&xxh3_64(word2.as_bytes())) else { return found };
-
+        println!("{}: {} docs, {}: {} docs", word1, vec1.len(), word2, vec2.len());
+        let (vec1, vec2) = if vec2.len() < vec1.len() { (vec2, vec1) } else { (vec1, vec2) };
+        println!("vec1: {} docs, vec2: {} docs", vec1.len(), vec2.len());
         // ищем пересечение двух векторов внутренних id
         let mut pos1: usize = 0;
         let mut pos2: usize = 0;

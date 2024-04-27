@@ -1,6 +1,6 @@
 use std::env;
 use std::fs::OpenOptions;
-use std::io::Write;
+use std::io::{BufWriter, Write};
 use std::process::exit;
 use serde::Serialize;
 use lipsum::lipsum;
@@ -19,11 +19,12 @@ fn main() {
         println!("Usage: fake-data <data file path> <number of documents>");
         exit(1);
     }
-    let mut data_file = OpenOptions::new()
+    let data_file = OpenOptions::new()
         .create(true)
         .append(true)
         .open(&args[1])
         .expect("failed to open data file");
+    let mut writer = BufWriter::new(&data_file);
 
     println!("fake-data: generating to file {}...", args[1]);
     let mut i = 0;
@@ -42,7 +43,7 @@ fn main() {
         };
         let mut str = serde_json::to_string(&src).expect("Serialization failed");
         str.push('\n');
-        data_file.write(str.as_bytes()).expect("Failed to write to data file");
+        writer.write(str.as_bytes()).expect("Failed to write to data file");
         i += 1;
     }
 }
